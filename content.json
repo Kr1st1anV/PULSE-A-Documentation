@@ -1,0 +1,2819 @@
+{
+ "version": 6,
+ "meta": {
+  "title": "PULSE-A Flight Software Hub",
+  "seeded": "2026-10-11",
+  "note": "Seeded from the docs site nav, a word-count scan of each page, and the IDR discrepancies sheet. Dependencies between apps (Related) were inferred from page descriptions and need team review.",
+  "lastEditedBy": "kr1st1anv",
+  "lastEdited": "2026-10-18 13:16"
+ },
+ "appGroups": [
+  {
+   "id": "obc",
+   "name": "OBC applications",
+   "desc": "Custom apps on the On-Board Computer (cFS instance 1).",
+   "apps": [
+    {
+     "name": "ADCS Manager",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/ADCS-manager-app.html",
+     "desc": "Monitors the current satellite orientation and packages messages to match ADCS standards.",
+     "words": 207,
+     "related": [
+      "Deployment",
+      "42 Simulator"
+     ],
+     "code": "https://github.com/UChicago-Space-Program/cFS-flight/tree/test_app-for-ADCS/apps",
+     "codeNote": "On main, apps/adcs_app is only a git submodule pointer to the private adcs_app repo (not read). The test_app-for-ADCS branch shows sample_app sending it sun-point and turn-from-sun commands."
+    },
+    {
+     "name": "Communication Manager",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/communication-manager-app.html",
+     "desc": "Primary interface to the CAN bus and backup I2C bus; prevents message collisions and handles queuing and prioritization.",
+     "words": 145,
+     "related": [
+      "CAN",
+      "I2C",
+      "CSP"
+     ],
+     "code": "https://github.com/UChicago-Space-Program/cFS-flight/tree/cross-compile-initial/apps/bus_comms",
+     "codeNote": "In code this is \"bus_comms\". Three divergent copies exist; the newest is on cross-compile-initial (Apr 20, 2026). See change CH-001."
+    },
+    {
+     "name": "Deployment",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/deployment-app.html",
+     "desc": "Sequences deployable actions after release and instructs the ADCS to begin detumbling.",
+     "words": 259,
+     "related": [
+      "ADCS Manager"
+     ],
+     "code": "",
+     "codeNote": ""
+    },
+    {
+     "name": "GPS Manager",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/GPS-manager-app.html",
+     "desc": "Interfaces with the GNSS receiver to track position and notifies other apps as the vehicle reaches ground-station overpasses.",
+     "words": 191,
+     "related": [
+      "Radio Manager",
+      "Payload Manager"
+     ],
+     "code": "",
+     "codeNote": ""
+    },
+    {
+     "name": "Payload Manager",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/payload-manager-app.html",
+     "desc": "Uses NASA's SBN to track the Payload Controller's state and relay key events during the PAT sequence.",
+     "words": 170,
+     "related": [
+      "SBN",
+      "PAT"
+     ],
+     "code": "",
+     "codeNote": ""
+    },
+    {
+     "name": "Power Manager",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/power-manager-app.html",
+     "desc": "Monitors the PDU and manages power distribution and thermal control.",
+     "words": 241,
+     "related": [
+      "Power Distribution Unit",
+      "Battery Board"
+     ],
+     "code": "",
+     "codeNote": ""
+    },
+    {
+     "name": "Radio Manager",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/radio-manager-app.html",
+     "desc": "Manages radio state; queues and transmits downlink packets.",
+     "words": 153,
+     "related": [
+      "Communication Manager",
+      "RF Communications"
+     ],
+     "code": "https://github.com/UChicago-Space-Program/cFS-flight/tree/radio-manager-dev/apps/radio_murgas_app",
+     "codeNote": "Two competing implementations on radio-manager-dev (radio_murgas_app and radio_app). See change CH-002."
+    },
+    {
+     "name": "Watchdog Monitor",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/watchdog-monitor-app.html",
+     "desc": "Sends heartbeats to the external watchdog timer and exchanges heartbeats with the Payload Controller so both computers stay operational, enabling fail-over if the OBC becomes unresponsive.",
+     "words": 140,
+     "related": [
+      "Health and Safety",
+      "Payload Manager"
+     ],
+     "code": "",
+     "codeNote": ""
+    }
+   ]
+  },
+  {
+   "id": "pc",
+   "name": "Payload Controller applications",
+   "desc": "Second cFS instance; also runs essential OBC apps as a backup. NOTE: IDR item RID-08 asked to descope to a single computer; see Checklist.",
+   "apps": [
+    {
+     "name": "Data Collection",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/data-collection-app.html",
+     "desc": "Logs payload data for post-pass downlink and analysis.",
+     "words": 100,
+     "related": [
+      "Data Store",
+      "CFDP",
+      "File Manager"
+     ],
+     "code": "",
+     "codeNote": ""
+    },
+    {
+     "name": "FPGA Manager",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/FPGA-manager-app.html",
+     "desc": "Handles laser-modulation FPGA I/O and telemetry.",
+     "words": 128,
+     "related": [
+      "Laser Manager",
+      "Payload FPGA"
+     ],
+     "code": "",
+     "codeNote": ""
+    },
+    {
+     "name": "FSM Manager",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/FSM-manager-app.html",
+     "desc": "Performs calibration of, keeps track of the state of, and commands the fast steering mirror (FSM).",
+     "words": 110,
+     "related": [
+      "PAT",
+      "Quadcell Manager"
+     ],
+     "code": "",
+     "codeNote": ""
+    },
+    {
+     "name": "Laser Manager",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/laser-manager.html",
+     "desc": "Tracks state and drives both the beacon and transmission lasers.",
+     "words": 125,
+     "related": [
+      "PAT",
+      "Laser Driving"
+     ],
+     "code": "",
+     "codeNote": ""
+    },
+    {
+     "name": "PAT",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/PAT-app.html",
+     "desc": "Takes data from other apps and orchestrates the Pointing, Acquisition and Tracking sequence.",
+     "words": 207,
+     "related": [
+      "FSM Manager",
+      "Quadcell Manager",
+      "Laser Manager",
+      "Pointing, Acquisition, and Tracking"
+     ],
+     "code": "",
+     "codeNote": ""
+    },
+    {
+     "name": "Quadcell Manager",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/quadcell-manager-app.html",
+     "desc": "Processes signals from the quadrant photodiode (QPD) and provides the data transformations other apps need.",
+     "words": 107,
+     "related": [
+      "PAT",
+      "Quadcell Circuit"
+     ],
+     "code": "",
+     "codeNote": ""
+    }
+   ]
+  },
+  {
+   "id": "nasa",
+   "name": "NASA-provided cFS applications",
+   "desc": "Off-the-shelf cFS apps PULSE-A configures. Docs should cover how WE use and configure them.",
+   "apps": [
+    {
+     "name": "Checksum",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/checksum-app.html",
+     "desc": "Ensures onboard memory integrity through CRC calculations.",
+     "words": 209,
+     "related": [
+      "Memory Manager"
+     ],
+     "code": "",
+     "codeNote": ""
+    },
+    {
+     "name": "CFDP",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/CFDP-app.html",
+     "desc": "CCSDS File Delivery Protocol services.",
+     "words": 115,
+     "related": [
+      "File Manager",
+      "Data Store"
+     ],
+     "code": "",
+     "codeNote": ""
+    },
+    {
+     "name": "Data Store",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/data-store-app.html",
+     "desc": "Stores software bus messages in files.",
+     "words": 183,
+     "related": [
+      "File Manager",
+      "CFDP"
+     ],
+     "code": "",
+     "codeNote": ""
+    },
+    {
+     "name": "File Manager",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/file-manager-app.html",
+     "desc": "Onboard file system management services.",
+     "words": 135,
+     "related": [
+      "CFDP"
+     ],
+     "code": "",
+     "codeNote": ""
+    },
+    {
+     "name": "Health and Safety",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/health-and-safety-app.html",
+     "desc": "Monitors application health and provides watchdog services.",
+     "words": 108,
+     "related": [
+      "Watchdog Monitor",
+      "Limit Checker"
+     ],
+     "code": "",
+     "codeNote": ""
+    },
+    {
+     "name": "Housekeeping",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/housekeeping-app.html",
+     "desc": "Builds and sends combined telemetry messages.",
+     "words": 167,
+     "related": [
+      "Limit Checker",
+      "Data Store"
+     ],
+     "code": "",
+     "codeNote": ""
+    },
+    {
+     "name": "Limit Checker",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/limit-checker-app.html",
+     "desc": "Monitors telemetry against threshold limits.",
+     "words": 130,
+     "related": [
+      "Housekeeping",
+      "Stored Commands"
+     ],
+     "code": "",
+     "codeNote": ""
+    },
+    {
+     "name": "Memory Dwell",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/memory-dwell-app.html",
+     "desc": "Monitors memory addresses accessed by the CPU.",
+     "words": 79,
+     "related": [
+      "Memory Manager"
+     ],
+     "code": "",
+     "codeNote": ""
+    },
+    {
+     "name": "Memory Manager",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/memory-manager-app.html",
+     "desc": "Memory loading and dumping.",
+     "words": 164,
+     "related": [
+      "Memory Dwell",
+      "Checksum"
+     ],
+     "code": "",
+     "codeNote": ""
+    },
+    {
+     "name": "SBN",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/SBN-app.html",
+     "desc": "Connects the cFE Software Bus to other buses (Software Bus Network between instances).",
+     "words": 192,
+     "related": [
+      "Payload Manager",
+      "cFS Software Bus"
+     ],
+     "code": "",
+     "codeNote": ""
+    },
+    {
+     "name": "Stored Commands",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/stored-commands-app.html",
+     "desc": "Manages autonomous command sequences.",
+     "words": 159,
+     "related": [
+      "Limit Checker"
+     ],
+     "code": "",
+     "codeNote": ""
+    }
+   ]
+  },
+  {
+   "id": "sim",
+   "name": "Simulation software",
+   "desc": "Used to test flight software before hardware.",
+   "apps": [
+    {
+     "name": "42 Simulator",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/42-simulator.html",
+     "desc": "Spacecraft dynamics simulation (see page).",
+     "words": 303,
+     "related": [
+      "ADCS Manager"
+     ],
+     "code": "",
+     "codeNote": ""
+    },
+    {
+     "name": "D2S2 Simulator",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/D2S2-simulator.html",
+     "desc": "D2S2 simulation (see page).",
+     "words": 268,
+     "related": [],
+     "code": "",
+     "codeNote": ""
+    }
+   ]
+  }
+ ],
+ "docSections": [
+  {
+   "id": "cfs",
+   "name": "Core Flight System & software environment",
+   "items": [
+    {
+     "title": "cFS General",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/cFS-general.html",
+     "note": "Start here: OSAL, PSP, cFE, pub/sub model, PULSE-A app architecture."
+    },
+    {
+     "title": "cFS Software Bus",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/cFS-sfotware-bus.html",
+     "note": "(URL has a typo \"sfotware\" upstream; it is the live link.)"
+    },
+    {
+     "title": "Operating System",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/operating-system.html",
+     "note": ""
+    },
+    {
+     "title": "Tailscale",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/tailscale.html",
+     "note": ""
+    },
+    {
+     "title": "Parsec",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/parsec.html",
+     "note": ""
+    },
+    {
+     "title": "Unused Software",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/unused-software.html",
+     "note": "What was evaluated and dropped."
+    },
+    {
+     "title": "FSW index page",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/index.html",
+     "note": "Lists every app page."
+    }
+   ]
+  },
+  {
+   "id": "proto",
+   "name": "Communications protocols",
+   "items": [
+    {
+     "title": "CAN",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/CAN.html",
+     "note": ""
+    },
+    {
+     "title": "CSP",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/CSP.html",
+     "note": ""
+    },
+    {
+     "title": "I2C",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/I2C.html",
+     "note": ""
+    },
+    {
+     "title": "SPI",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/SPI.html",
+     "note": ""
+    }
+   ]
+  },
+  {
+   "id": "hw",
+   "name": "Hardware the software runs on",
+   "items": [
+    {
+     "title": "Command and Data Handling",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/cdh.html",
+     "note": ""
+    },
+    {
+     "title": "On-Board Computer",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/hw/cdh/obc.html",
+     "note": ""
+    },
+    {
+     "title": "Power Distribution Unit",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/hw/power/pdu.html",
+     "note": ""
+    },
+    {
+     "title": "Battery Board",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/hw/power/batt-board.html",
+     "note": ""
+    },
+    {
+     "title": "RF Communications",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/rf/index.html",
+     "note": ""
+    },
+    {
+     "title": "RF Ground Station Software",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/rf/rfgs-software.html",
+     "note": ""
+    },
+    {
+     "title": "RF Ground Station Hardware",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/rf/rfgs-hardware.html",
+     "note": ""
+    },
+    {
+     "title": "Licensing",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/rf/licensing.html",
+     "note": ""
+    }
+   ]
+  },
+  {
+   "id": "mission",
+   "name": "Mission, PAT and payload (context for the payload apps)",
+   "items": [
+    {
+     "title": "Mission overview",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/general/index.html",
+     "note": ""
+    },
+    {
+     "title": "Pointing, Acquisition, and Tracking",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/general/PAT.html",
+     "note": ""
+    },
+    {
+     "title": "Reference List",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/general/reference_list.html",
+     "note": ""
+    },
+    {
+     "title": "Payload",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/payload/index.html",
+     "note": ""
+    },
+    {
+     "title": "Payload FPGA",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/payload/FPGA.html",
+     "note": ""
+    },
+    {
+     "title": "Laser Driving",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/payload/laser-driving.html",
+     "note": ""
+    },
+    {
+     "title": "Quadcell Circuit",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/payload/quadcell.html",
+     "note": ""
+    },
+    {
+     "title": "Link Budget",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/payload/Link-Budget.html",
+     "note": ""
+    }
+   ]
+  },
+  {
+   "id": "ogs",
+   "name": "Optical ground station (software side)",
+   "items": [
+    {
+     "title": "Optical Ground Station",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/ground/optical-ground/index.html",
+     "note": ""
+    },
+    {
+     "title": "OGS Software",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/ground/optical-ground/ogs-software.html",
+     "note": ""
+    },
+    {
+     "title": "Error Correction",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/ground/optical-ground/error-correction.html",
+     "note": ""
+    },
+    {
+     "title": "Telescope Control",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/ground/optical-ground/telescope-control.html",
+     "note": ""
+    },
+    {
+     "title": "Tracking Camera",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/ground/optical-ground/tracking-camera.html",
+     "note": ""
+    }
+   ]
+  },
+  {
+   "id": "se",
+   "name": "Systems engineering (CDR-relevant)",
+   "items": [
+    {
+     "title": "Introduction",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/systems/Systems_Engineering/Introduction.html",
+     "note": ""
+    },
+    {
+     "title": "Management Plan (SEMP)",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/systems/Systems_Engineering/SEMP.html",
+     "note": ""
+    },
+    {
+     "title": "Systems Requirements",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/systems/Systems_Engineering/Systems_Requirements.html",
+     "note": ""
+    },
+    {
+     "title": "Verification Plans",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/systems/Systems_Engineering/VV_Planning.html",
+     "note": ""
+    },
+    {
+     "title": "Mission Assurance",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/systems/Systems_Engineering/Mission_Assurance.html",
+     "note": ""
+    },
+    {
+     "title": "Systems Architecture",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/systems/Interfaces/Systems_Architecture.html",
+     "note": ""
+    },
+    {
+     "title": "Environmental Testing",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/systems/Testing/Environmental_Testing.html",
+     "note": ""
+    },
+    {
+     "title": "Test Objectives",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/systems/Testing/Test_Objectives.html",
+     "note": ""
+    },
+    {
+     "title": "Testing Breakdown",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/systems/Testing/Testing_Breakdown.html",
+     "note": ""
+    },
+    {
+     "title": "Testing Timeline",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/systems/Testing/Testing_Timeline.html",
+     "note": ""
+    }
+   ]
+  },
+  {
+   "id": "repos",
+   "name": "PULSE-A GitHub repos (public, UChicago-Space-Program)",
+   "items": [
+    {
+     "title": "cFS-flight",
+     "url": "https://github.com/UChicago-Space-Program/cFS-flight",
+     "note": "Flight software tree (cFE, OSAL, PSP, apps/, PULSE-A_defs/, Dockerfile.bbb for BeagleBone). main has apps/adcs_app plus NASA lab apps. Branches: radio-manager-dev, feature/buscomms_branch, test_app-for-ADCS, cross-compile-initial, NASA-cFS-Apps, Dockerfile-Update. Last push 2026-04-27."
+    },
+    {
+     "title": "cFS-simulation",
+     "url": "https://github.com/UChicago-Space-Program/cFS-simulation",
+     "note": "Copy of the NASA cFS bundle for simulation. Last push 2026-04-01."
+    },
+    {
+     "title": "pulse-firmware",
+     "url": "https://github.com/UChicago-Space-Program/pulse-firmware",
+     "note": "Firmware for OBC, PC (payload controller), PDU and PayloadFPGA; modules/ + antora.yml feed the docs site. Last push 2026-04-30."
+    },
+    {
+     "title": "pulse-hardware",
+     "url": "https://github.com/UChicago-Space-Program/pulse-hardware",
+     "note": "Hardware documents: flight-subsystem-designs, test-hardware, old-designs; has modules/ + antora.yml. Last push 2026-09-25."
+    },
+    {
+     "title": "mission-documentation",
+     "url": "https://github.com/UChicago-Space-Program/mission-documentation",
+     "note": "General project docs: design-reviews/, quarterly-updates/, publications/, CSLI proposal and executive summary PDFs. Last push 2026-05-11."
+    },
+    {
+     "title": "optical-ground-station",
+     "url": "https://github.com/UChicago-Space-Program/optical-ground-station",
+     "note": "OGS code (Jupyter). Most recently pushed repo (2026-10-05)."
+    },
+    {
+     "title": "fsm-with-raspberrypi",
+     "url": "https://github.com/UChicago-Space-Program/fsm-with-raspberrypi",
+     "note": "Python to drive the Mirrorcle FSM from a Raspberry Pi; relevant to the FSM Manager app."
+    },
+    {
+     "title": "RF",
+     "url": "https://github.com/UChicago-Space-Program/RF",
+     "note": "RF code (Python), relevant to Radio Manager."
+    },
+    {
+     "title": "olb",
+     "url": "https://github.com/UChicago-Space-Program/olb",
+     "note": "Optical link budgeting for PULSE-A."
+    },
+    {
+     "title": "optical-simulation",
+     "url": "https://github.com/UChicago-Space-Program/optical-simulation",
+     "note": "Optical simulation (C++)."
+    },
+    {
+     "title": "docs-site",
+     "url": "https://github.com/UChicago-Space-Program/docs-site",
+     "note": "Antora playbook that builds the public docs site. Per its description, no documentation goes here."
+    },
+    {
+     "title": "docs-ui",
+     "url": "https://github.com/UChicago-Space-Program/docs-ui",
+     "note": "Antora UI (the maroon theme)."
+    },
+    {
+     "title": "uchicago-pulse.github.io",
+     "url": "https://github.com/UChicago-Space-Program/uchicago-pulse.github.io",
+     "note": "Older site repo (2024)."
+    }
+   ]
+  },
+  {
+   "id": "ext",
+   "name": "External references & code",
+   "items": [
+    {
+     "title": "NASA cFS Training (Draco), NTRS record",
+     "url": "https://ntrs.nasa.gov/citations/20240000217",
+     "note": "Best general cFS tutorial found in the open tabs."
+    },
+    {
+     "title": "cFS Training Draco, PPTX (direct)",
+     "url": "https://ntrs.nasa.gov/api/citations/20240000217/downloads/cFS_Training_Draco.pptx",
+     "note": ""
+    },
+    {
+     "title": "NASA cFS bundle (upstream)",
+     "url": "https://github.com/nasa/cFS",
+     "note": "Upstream project."
+    }
+   ]
+  },
+  {
+   "id": "team",
+   "name": "Team resources (private, need access)",
+   "items": [
+    {
+     "title": "pulse-fsw-documentation: DOCS.md",
+     "url": "https://github.com/UChicago-Space-Program/pulse-fsw-documentation/blob/main/DOCS.md",
+     "note": "Private repo. NOT read when this hub was built."
+    },
+    {
+     "title": "pulse-fsw-documentation: ACRONYMS.md",
+     "url": "https://github.com/UChicago-Space-Program/pulse-fsw-documentation/blob/main/ACRONYMS.md",
+     "note": "Private repo. NOT read when this hub was built."
+    },
+    {
+     "title": "IDR: Flight Systems Day (slides)",
+     "url": "https://docs.google.com/presentation/d/1MEqLrrkD__yCPnK4VEv1NziDY7FgCbxQQQ9y9nfJq40/edit",
+     "note": ""
+    },
+    {
+     "title": "IDR Review Discrepancies (sheet)",
+     "url": "https://docs.google.com/spreadsheets/d/1yujNndKaRV4b9alUcgdkQiUib2ByhrV2ZJhQaDNY-S4/edit",
+     "note": "RIDs 00-31 read; software-relevant ones are on the Checklist tab."
+    },
+    {
+     "title": "2026 Fixed PULSE-A Master Budget (sheet)",
+     "url": "https://docs.google.com/spreadsheets/d/1ro0ILvql28lw8c7ywabGunC0y-CtfrBIcnvDXImZI9Q/edit",
+     "note": "Link only; contents not read."
+    },
+    {
+     "title": "Research Papers & Books (Drive)",
+     "url": "https://drive.google.com/drive/folders/1GSn6hGQgfGP_xs0WhW5sX6Fum4cg-Ott",
+     "note": "Mostly optical/PAT: MIT CLICK papers, Kingsbury, Riesing, Hemmati, etc. Little on cFS."
+    },
+    {
+     "title": "CDH_and_EPS_SmallSat_2026.pdf",
+     "url": "",
+     "note": "Local file in Downloads on Kristian's laptop; upload to Drive and paste the link here."
+    },
+    {
+     "title": "PULSE Discord #general-fsw",
+     "url": "",
+     "note": "Team chat for flight software. Add the invite link if you want it here."
+    }
+   ]
+  },
+  {
+   "id": "pub",
+   "name": "Public pages",
+   "items": [
+    {
+     "title": "UCSP CubeSat Division page",
+     "url": "https://www.uchicagospaceprogram.org/cubesat",
+     "note": "PULSE-A and PULSE-Q overview."
+    },
+    {
+     "title": "PULSE-A documentation home",
+     "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/index.html",
+     "note": ""
+    }
+   ]
+  }
+ ],
+ "checklist": [
+  {
+   "id": "c001",
+   "group": "CDR (due Nov 17, 2026)",
+   "text": "Confirm exactly what flight software must show at CDR",
+   "note": "No FSW deliverable list was found in the resources scanned. Ask Brian Yu / the leads.",
+   "source": "open question",
+   "done": false,
+   "owner": "",
+   "due": ""
+  },
+  {
+   "id": "c002",
+   "group": "CDR (due Nov 17, 2026)",
+   "text": "Resolve RID-08: single computer vs dual computer, then update the cFS docs",
+   "note": "High severity (mission-altering). Docs still describe OBC + Payload Controller. Owner in the sheet: Zumi; BeagleBone/BeagleFire testing underway.",
+   "source": "IDR sheet RID-08",
+   "done": true,
+   "owner": "",
+   "due": ""
+  },
+  {
+   "id": "c003",
+   "group": "CDR (due Nov 17, 2026)",
+   "text": "Add software telemetry to the telemetry breakdown",
+   "note": "\"Software telemetry is completely absent from the list.\" Owner in the sheet: Zumi.",
+   "source": "IDR sheet RID-17",
+   "done": false,
+   "owner": "",
+   "due": ""
+  },
+  {
+   "id": "c004",
+   "group": "CDR (due Nov 17, 2026)",
+   "text": "Add failure cases for I2C and SPI interfaces",
+   "note": "Consider more failure cases for components and interfaces. No owner assigned in the sheet.",
+   "source": "IDR sheet RID-31",
+   "done": false,
+   "owner": "",
+   "due": ""
+  },
+  {
+   "id": "c005",
+   "group": "CDR (due Nov 17, 2026)",
+   "text": "Decide the ground-control tool (Grafana vs OpenC3)",
+   "note": "Reviewer advised Grafana over OpenC3. Low severity, no owner assigned.",
+   "source": "IDR sheet RID-21",
+   "done": false,
+   "owner": "",
+   "due": ""
+  },
+  {
+   "id": "c006",
+   "group": "CDR (due Nov 17, 2026)",
+   "text": "Fill in remaining doc pages and cross-link every app to the Software Bus message list",
+   "note": "",
+   "source": "suggested",
+   "done": false,
+   "owner": "",
+   "due": ""
+  },
+  {
+   "id": "c007",
+   "group": "CDR (due Nov 17, 2026)",
+   "text": "Reconcile docs with code: merge or retire the bus_comms and radio branches, and say \"planned\" for apps with no code",
+   "note": "main has no app code of its own (adcs_app is a private submodule). See the Changes tab, CH-001 to CH-007.",
+   "source": "cFS-flight scan 2026-10-11",
+   "done": false,
+   "owner": "",
+   "due": ""
+  },
+  {
+   "id": "c008",
+   "group": "CDR (due Nov 17, 2026)",
+   "text": "Find where the docs source lives and how to publish edits",
+   "note": "Confirmed: sources are mission-documentation/modules/ROOT/pages/avionics/fsw/*.adoc (Antora); docs-site is only the playbook. Still confirm the review and publish workflow with the leads.",
+   "source": "repo scan 2026-10-11",
+   "done": false,
+   "owner": "",
+   "due": ""
+  },
+  {
+   "id": "c009",
+   "group": "Foundations (read first)",
+   "text": "Read cFS General and cFS Software Bus pages",
+   "note": "",
+   "source": "suggested",
+   "done": false,
+   "owner": "",
+   "due": ""
+  },
+  {
+   "id": "c010",
+   "group": "Foundations (read first)",
+   "text": "Skim NASA cFS Training (Draco) slides",
+   "note": "",
+   "source": "suggested",
+   "done": false,
+   "owner": "",
+   "due": ""
+  },
+  {
+   "id": "c011",
+   "group": "Foundations (read first)",
+   "text": "Read DOCS.md and ACRONYMS.md in pulse-fsw-documentation",
+   "note": "Private repo; not read by the assistant.",
+   "source": "suggested",
+   "done": false,
+   "owner": "",
+   "due": ""
+  },
+  {
+   "id": "c012",
+   "group": "Foundations (read first)",
+   "text": "Skim pulse-firmware README and the OBC/ and PC/ folders",
+   "note": "",
+   "source": "suggested",
+   "done": false,
+   "owner": "",
+   "due": ""
+  },
+  {
+   "id": "c013",
+   "group": "Foundations (read first)",
+   "text": "Join #general-fsw on the PULSE Discord and confirm UCSP headcount form",
+   "note": "From Brian Yu's Oct 5 email.",
+   "source": "morning brief 2026-10-11",
+   "done": false,
+   "owner": "",
+   "due": ""
+  },
+  {
+   "id": "c014",
+   "group": "Per-app documentation",
+   "text": "ADCS Manager: purpose, commands, telemetry, SB messages (pub/sub), tables, events, tests",
+   "note": "Docs page is ~207 words on 2026-10-11 (OBC applications).",
+   "source": "docs site scan",
+   "done": false,
+   "owner": "",
+   "due": ""
+  },
+  {
+   "id": "c015",
+   "group": "Per-app documentation",
+   "text": "Communication Manager: purpose, commands, telemetry, SB messages (pub/sub), tables, events, tests",
+   "note": "Docs page is ~145 words on 2026-10-11 (OBC applications).",
+   "source": "docs site scan",
+   "done": false,
+   "owner": "",
+   "due": ""
+  },
+  {
+   "id": "c016",
+   "group": "Per-app documentation",
+   "text": "Deployment: purpose, commands, telemetry, SB messages (pub/sub), tables, events, tests",
+   "note": "Docs page is ~259 words on 2026-10-11 (OBC applications).",
+   "source": "docs site scan",
+   "done": false,
+   "owner": "",
+   "due": ""
+  },
+  {
+   "id": "c017",
+   "group": "Per-app documentation",
+   "text": "GPS Manager: purpose, commands, telemetry, SB messages (pub/sub), tables, events, tests",
+   "note": "Docs page is ~191 words on 2026-10-11 (OBC applications).",
+   "source": "docs site scan",
+   "done": false,
+   "owner": "",
+   "due": ""
+  },
+  {
+   "id": "c018",
+   "group": "Per-app documentation",
+   "text": "Payload Manager: purpose, commands, telemetry, SB messages (pub/sub), tables, events, tests",
+   "note": "Docs page is ~170 words on 2026-10-11 (OBC applications).",
+   "source": "docs site scan",
+   "done": false,
+   "owner": "",
+   "due": ""
+  },
+  {
+   "id": "c019",
+   "group": "Per-app documentation",
+   "text": "Power Manager: purpose, commands, telemetry, SB messages (pub/sub), tables, events, tests",
+   "note": "Docs page is ~241 words on 2026-10-11 (OBC applications).",
+   "source": "docs site scan",
+   "done": false,
+   "owner": "",
+   "due": ""
+  },
+  {
+   "id": "c020",
+   "group": "Per-app documentation",
+   "text": "Radio Manager: purpose, commands, telemetry, SB messages (pub/sub), tables, events, tests",
+   "note": "Docs page is ~153 words on 2026-10-11 (OBC applications).",
+   "source": "docs site scan",
+   "done": false,
+   "owner": "",
+   "due": ""
+  },
+  {
+   "id": "c021",
+   "group": "Per-app documentation",
+   "text": "Watchdog Monitor: purpose, commands, telemetry, SB messages (pub/sub), tables, events, tests",
+   "note": "Docs page is ~140 words on 2026-10-11 (OBC applications).",
+   "source": "docs site scan",
+   "done": false,
+   "owner": "",
+   "due": ""
+  },
+  {
+   "id": "c022",
+   "group": "Per-app documentation",
+   "text": "Data Collection: purpose, commands, telemetry, SB messages (pub/sub), tables, events, tests",
+   "note": "Docs page is ~100 words on 2026-10-11 (Payload Controller applications).",
+   "source": "docs site scan",
+   "done": false,
+   "owner": "",
+   "due": ""
+  },
+  {
+   "id": "c023",
+   "group": "Per-app documentation",
+   "text": "FPGA Manager: purpose, commands, telemetry, SB messages (pub/sub), tables, events, tests",
+   "note": "Docs page is ~128 words on 2026-10-11 (Payload Controller applications).",
+   "source": "docs site scan",
+   "done": false,
+   "owner": "",
+   "due": ""
+  },
+  {
+   "id": "c024",
+   "group": "Per-app documentation",
+   "text": "FSM Manager: purpose, commands, telemetry, SB messages (pub/sub), tables, events, tests",
+   "note": "Docs page is ~110 words on 2026-10-11 (Payload Controller applications).",
+   "source": "docs site scan",
+   "done": false,
+   "owner": "",
+   "due": ""
+  },
+  {
+   "id": "c025",
+   "group": "Per-app documentation",
+   "text": "Laser Manager: purpose, commands, telemetry, SB messages (pub/sub), tables, events, tests",
+   "note": "Docs page is ~125 words on 2026-10-11 (Payload Controller applications).",
+   "source": "docs site scan",
+   "done": false,
+   "owner": "",
+   "due": ""
+  },
+  {
+   "id": "c026",
+   "group": "Per-app documentation",
+   "text": "PAT: purpose, commands, telemetry, SB messages (pub/sub), tables, events, tests",
+   "note": "Docs page is ~207 words on 2026-10-11 (Payload Controller applications).",
+   "source": "docs site scan",
+   "done": false,
+   "owner": "",
+   "due": ""
+  },
+  {
+   "id": "c027",
+   "group": "Per-app documentation",
+   "text": "Quadcell Manager: purpose, commands, telemetry, SB messages (pub/sub), tables, events, tests",
+   "note": "Docs page is ~107 words on 2026-10-11 (Payload Controller applications).",
+   "source": "docs site scan",
+   "done": false,
+   "owner": "",
+   "due": ""
+  },
+  {
+   "id": "c028",
+   "group": "Per-app documentation",
+   "text": "Checksum: purpose, commands, telemetry, SB messages (pub/sub), tables, events, tests",
+   "note": "Docs page is ~209 words on 2026-10-11 (NASA-provided cFS applications).",
+   "source": "docs site scan",
+   "done": false,
+   "owner": "",
+   "due": ""
+  },
+  {
+   "id": "c029",
+   "group": "Per-app documentation",
+   "text": "CFDP: purpose, commands, telemetry, SB messages (pub/sub), tables, events, tests",
+   "note": "Docs page is ~115 words on 2026-10-11 (NASA-provided cFS applications).",
+   "source": "docs site scan",
+   "done": false,
+   "owner": "",
+   "due": ""
+  },
+  {
+   "id": "c030",
+   "group": "Per-app documentation",
+   "text": "Data Store: purpose, commands, telemetry, SB messages (pub/sub), tables, events, tests",
+   "note": "Docs page is ~183 words on 2026-10-11 (NASA-provided cFS applications).",
+   "source": "docs site scan",
+   "done": false,
+   "owner": "",
+   "due": ""
+  },
+  {
+   "id": "c031",
+   "group": "Per-app documentation",
+   "text": "File Manager: purpose, commands, telemetry, SB messages (pub/sub), tables, events, tests",
+   "note": "Docs page is ~135 words on 2026-10-11 (NASA-provided cFS applications).",
+   "source": "docs site scan",
+   "done": false,
+   "owner": "",
+   "due": ""
+  },
+  {
+   "id": "c032",
+   "group": "Per-app documentation",
+   "text": "Health and Safety: purpose, commands, telemetry, SB messages (pub/sub), tables, events, tests",
+   "note": "Docs page is ~108 words on 2026-10-11 (NASA-provided cFS applications).",
+   "source": "docs site scan",
+   "done": false,
+   "owner": "",
+   "due": ""
+  },
+  {
+   "id": "c033",
+   "group": "Per-app documentation",
+   "text": "Housekeeping: purpose, commands, telemetry, SB messages (pub/sub), tables, events, tests",
+   "note": "Docs page is ~167 words on 2026-10-11 (NASA-provided cFS applications).",
+   "source": "docs site scan",
+   "done": false,
+   "owner": "",
+   "due": ""
+  },
+  {
+   "id": "c034",
+   "group": "Per-app documentation",
+   "text": "Limit Checker: purpose, commands, telemetry, SB messages (pub/sub), tables, events, tests",
+   "note": "Docs page is ~130 words on 2026-10-11 (NASA-provided cFS applications).",
+   "source": "docs site scan",
+   "done": false,
+   "owner": "",
+   "due": ""
+  },
+  {
+   "id": "c035",
+   "group": "Per-app documentation",
+   "text": "Memory Dwell: purpose, commands, telemetry, SB messages (pub/sub), tables, events, tests",
+   "note": "Docs page is ~79 words on 2026-10-11 (NASA-provided cFS applications).",
+   "source": "docs site scan",
+   "done": false,
+   "owner": "",
+   "due": ""
+  },
+  {
+   "id": "c036",
+   "group": "Per-app documentation",
+   "text": "Memory Manager: purpose, commands, telemetry, SB messages (pub/sub), tables, events, tests",
+   "note": "Docs page is ~164 words on 2026-10-11 (NASA-provided cFS applications).",
+   "source": "docs site scan",
+   "done": false,
+   "owner": "",
+   "due": ""
+  },
+  {
+   "id": "c037",
+   "group": "Per-app documentation",
+   "text": "SBN: purpose, commands, telemetry, SB messages (pub/sub), tables, events, tests",
+   "note": "Docs page is ~192 words on 2026-10-11 (NASA-provided cFS applications).",
+   "source": "docs site scan",
+   "done": false,
+   "owner": "",
+   "due": ""
+  },
+  {
+   "id": "c038",
+   "group": "Per-app documentation",
+   "text": "Stored Commands: purpose, commands, telemetry, SB messages (pub/sub), tables, events, tests",
+   "note": "Docs page is ~159 words on 2026-10-11 (NASA-provided cFS applications).",
+   "source": "docs site scan",
+   "done": false,
+   "owner": "",
+   "due": ""
+  },
+  {
+   "id": "c039",
+   "group": "Per-app documentation",
+   "text": "42 Simulator: how to run it and what it validates",
+   "note": "Docs page is ~303 words on 2026-10-11.",
+   "source": "docs site scan",
+   "done": false,
+   "owner": "",
+   "due": ""
+  },
+  {
+   "id": "c040",
+   "group": "Per-app documentation",
+   "text": "D2S2 Simulator: how to run it and what it validates",
+   "note": "Docs page is ~268 words on 2026-10-11.",
+   "source": "docs site scan",
+   "done": false,
+   "owner": "",
+   "due": ""
+  }
+ ],
+ "onboarding": {
+  "welcome": "Welcome to PULSE-A flight software. Work through these tracks in order; tick steps as you finish them (your progress is saved to your own account). Times are rough estimates.",
+  "tracks": [
+   {
+    "id": "t1",
+    "name": "Day 1: Understand the mission",
+    "desc": "What PULSE-A is, who is on the team, and the vocabulary everyone uses. About an hour.",
+    "steps": [
+     {
+      "id": "o001",
+      "title": "Mission Overview",
+      "url": "https://docs.uchicagospaceprogram.org/documentation/general/index.html",
+      "kind": "read",
+      "minutes": 5,
+      "why": "3U CubeSat, 10 Mbps space-to-ground laser link using circular polarization shift keying (CPolSK); the segments, the timeline, and what each of the 11 departments does."
+     },
+     {
+      "id": "o002",
+      "title": "Pointing, Acquisition, and Tracking (PAT)",
+      "url": "https://docs.uchicagospaceprogram.org/documentation/general/PAT.html",
+      "kind": "read",
+      "minutes": 5,
+      "why": "The sequence the whole payload exists to perform; several flight apps (PAT, FSM, Laser, Quadcell) serve it. Study the sequence diagram."
+     },
+     {
+      "id": "o003",
+      "title": "Reference List: definitions and acronyms",
+      "url": "https://docs.uchicagospaceprogram.org/documentation/general/reference_list.html",
+      "kind": "read",
+      "minutes": 8,
+      "why": "Skim now, keep open later. Defines Payload Computer vs Payload Controller, the three lasers, and ~60 acronyms."
+     },
+     {
+      "id": "o004",
+      "title": "System Architecture Overview",
+      "url": "https://docs.uchicagospaceprogram.org/documentation/systems/Interfaces/Systems_Architecture.html",
+      "kind": "read",
+      "minutes": 8,
+      "why": "Launch, Space and Ground segments and how subsystems interface."
+     },
+     {
+      "id": "o005",
+      "title": "UCSP CubeSat Division page",
+      "url": "https://www.uchicagospaceprogram.org/cubesat",
+      "kind": "read",
+      "minutes": 5,
+      "why": "The public face of the project; useful to explain what you work on."
+     }
+    ]
+   },
+   {
+    "id": "t2",
+    "name": "Week 1: Flight software foundations",
+    "desc": "cFS, the software bus, Linux basics and the computers the software runs on.",
+    "steps": [
+     {
+      "id": "o006",
+      "title": "Flight Software documentation index",
+      "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/index.html",
+      "kind": "read",
+      "minutes": 3,
+      "why": "Map of every FSW page, split into OBC apps, Payload Controller apps and NASA-provided apps."
+     },
+     {
+      "id": "o007",
+      "title": "cFS General",
+      "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/cFS-general.html",
+      "kind": "read",
+      "minutes": 8,
+      "why": "OSAL, PSP, cFE and the publish/subscribe model, then how PULSE-A splits apps between the OBC and the Payload Controller."
+     },
+     {
+      "id": "o008",
+      "title": "cFS Software Bus",
+      "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/cFS-sfotware-bus.html",
+      "kind": "read",
+      "minutes": 5,
+      "why": "Pipes, subscriptions and message IDs, with a CFE_SB_SubscribeEX code example. Most app bugs show up here."
+     },
+     {
+      "id": "o009",
+      "title": "Operating System (Linux/Debian, SSH, SCP)",
+      "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/operating-system.html",
+      "kind": "do",
+      "minutes": 13,
+      "why": "Practice every command on the page against a Linux machine; the boards run Debian and you reach them by SSH/SCP."
+     },
+     {
+      "id": "o010",
+      "title": "Command and Data Handling subsystem",
+      "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/cdh.html",
+      "kind": "read",
+      "minutes": 3,
+      "why": "Two nearly identical computers (OBC and Payload Controller), dual-redundant CAN, and a private Ethernet link between them."
+     },
+     {
+      "id": "o011",
+      "title": "On-Board Computer and Payload Controller",
+      "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/hw/cdh/obc.html",
+      "kind": "read",
+      "minutes": 8,
+      "why": "BeagleBone Black on a PC/104 flight motherboard with RTC, CAN transceiver and an external MSP430 watchdog."
+     },
+     {
+      "id": "o012",
+      "title": "Tailscale: get access to the lab devices",
+      "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/tailscale.html",
+      "kind": "do",
+      "minutes": 15,
+      "why": "Install it and sign in with the team Google account to reach the lab router and BeagleBones. Ask a lead for the account details; do not guess them."
+     },
+     {
+      "id": "o013",
+      "title": "NASA cFS Training (Draco) slides",
+      "url": "https://ntrs.nasa.gov/citations/20240000217",
+      "kind": "read",
+      "minutes": 60,
+      "why": "The best general cFS tutorial found in the team browser tabs. Skim; do not try to finish it in one sitting."
+     },
+     {
+      "id": "o014",
+      "title": "Download and read the cFS-simulation README",
+      "url": "https://github.com/UChicago-Space-Program/cFS-simulation",
+      "kind": "do",
+      "minutes": 45,
+      "why": "A copy of the NASA cFS bundle. Try to build it and send a command; the README lists the steps."
+     }
+    ]
+   },
+   {
+    "id": "t3",
+    "name": "Week 2: Buses, protocols and apps",
+    "desc": "How the pieces talk, then the apps themselves.",
+    "steps": [
+     {
+      "id": "o015",
+      "title": "CAN",
+      "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/CAN.html",
+      "kind": "read",
+      "minutes": 8,
+      "why": "The primary spacecraft bus (dual redundant)."
+     },
+     {
+      "id": "o016",
+      "title": "CSP (Cubesat Space Protocol)",
+      "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/CSP.html",
+      "kind": "read",
+      "minutes": 7,
+      "why": "Network protocol layer used across subsystems."
+     },
+     {
+      "id": "o017",
+      "title": "I2C",
+      "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/I2C.html",
+      "kind": "read",
+      "minutes": 4,
+      "why": "Backup bus and sensor interface."
+     },
+     {
+      "id": "o018",
+      "title": "SPI",
+      "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/SPI.html",
+      "kind": "read",
+      "minutes": 3,
+      "why": "Peripheral interface."
+     },
+     {
+      "id": "o019",
+      "title": "OBC apps: read all eight pages",
+      "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/index.html#_obc_applications",
+      "kind": "read",
+      "minutes": 25,
+      "why": "ADCS Manager, Communication Manager, Deployment, GPS Manager, Payload Manager, Power Manager, Radio Manager, Watchdog Monitor. Use the Apps tab of this hub to jump between them and see related apps."
+     },
+     {
+      "id": "o020",
+      "title": "Payload Controller apps: read all six pages",
+      "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/index.html#_payload_controller_applications",
+      "kind": "read",
+      "minutes": 20,
+      "why": "Data Collection, FPGA Manager, FSM Manager, Laser Manager, PAT, Quadcell Manager."
+     },
+     {
+      "id": "o021",
+      "title": "NASA-provided apps: skim the list",
+      "url": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/index.html#_nasa_provided_cfs_applications",
+      "kind": "read",
+      "minutes": 15,
+      "why": "Checksum, CFDP, Data Store, File Manager, Health and Safety, Housekeeping, Limit Checker, Memory Dwell, Memory Manager, SBN, Stored Commands."
+     },
+     {
+      "id": "o022",
+      "title": "Pick the app you want to own",
+      "url": "",
+      "kind": "ask",
+      "minutes": 5,
+      "why": "Tell a lead which app you want to own. The Apps tab marks which doc pages are thin and where code exists."
+     }
+    ]
+   },
+   {
+    "id": "t4",
+    "name": "Week 3: Team workflow and your first contribution",
+    "desc": "Access, the repos, and the first useful thing you can do.",
+    "steps": [
+     {
+      "id": "o023",
+      "title": "Get access to the UChicago-Space-Program GitHub org",
+      "url": "https://github.com/UChicago-Space-Program",
+      "kind": "ask",
+      "minutes": 10,
+      "why": "The docs say this org holds every repository and the docs themselves. Ask a lead to invite your account."
+     },
+     {
+      "id": "o024",
+      "title": "Join #general-fsw on the PULSE Discord and fill out the UCSP headcount form",
+      "url": "",
+      "kind": "do",
+      "minutes": 10,
+      "why": "Brian Yu's onboarding email mentions both; ask him for the invite link if you lack it."
+     },
+     {
+      "id": "o025",
+      "title": "Read the pulse-firmware README (PayloadFPGA is the useful part)",
+      "url": "https://github.com/UChicago-Space-Program/pulse-firmware",
+      "kind": "read",
+      "minutes": 20,
+      "why": "Holds Teensy sketches, FPGA bitstream code and test files, not the cFS code. Know what is there so you do not look for flight software in it."
+     },
+     {
+      "id": "o026",
+      "title": "Look at cFS-flight: main, then the radio-manager-dev and cross-compile-initial branches",
+      "url": "https://github.com/UChicago-Space-Program/cFS-flight",
+      "kind": "read",
+      "minutes": 45,
+      "why": "main is only the NASA bundle plus PULSE-A_defs. The real app work (bus_comms, radio, CFDP) is on branches. Start with the Changes tab, then read apps/bus_comms and apps/radio_murgas_app."
+     },
+     {
+      "id": "o_e2e",
+      "title": "Run the end-to-end CFDP test rig (tools/radio-mock, tools/ground-station)",
+      "url": "https://github.com/UChicago-Space-Program/cFS-flight/tree/radio-manager-dev/tools",
+      "kind": "do",
+      "minutes": 90,
+      "why": "Mock radio (CSP 2) and mock ground station (CSP 3) around bus_comms (CSP 1) on vcan0. The best way to see the data path work. Ask Akash Piya or the leads for the run steps; the docstrings in the scripts list the commands."
+     },
+     {
+      "id": "o027",
+      "title": "Systems Engineering: Introduction, Requirements and Verification plans",
+      "url": "https://docs.uchicagospaceprogram.org/documentation/systems/Systems_Engineering/Introduction.html",
+      "kind": "read",
+      "minutes": 20,
+      "why": "The SRD and V&V plan say how each requirement will be verified; CDR will check your app against them."
+     },
+     {
+      "id": "o028",
+      "title": "IDR Review Discrepancies sheet (needs Drive access)",
+      "url": "https://docs.google.com/spreadsheets/d/1yujNndKaRV4b9alUcgdkQiUib2ByhrV2ZJhQaDNY-S4/edit",
+      "kind": "read",
+      "minutes": 20,
+      "why": "What reviewers asked for. Four items touch flight software; they are on the Checklist tab."
+     },
+     {
+      "id": "o029",
+      "title": "First contribution: expand one thin app page",
+      "url": "",
+      "kind": "do",
+      "minutes": 120,
+      "why": "Take a page badged \"thin\" on the Apps tab, write its commands, telemetry, SB messages, tables, events and tests, then tick the matching Checklist item."
+     }
+    ]
+   }
+  ]
+ },
+ "departments": [
+  {
+   "term": "Payload",
+   "text": "Designs and builds the optical transmit terminal for CPolSK communications."
+  },
+  {
+   "term": "Optical Ground Station",
+   "text": "Builds the optical receive terminal on the ground."
+  },
+  {
+   "term": "Avionics Hardware",
+   "text": "Power distribution unit, battery board, on-board computer, and attitude control."
+  },
+  {
+   "term": "Flight Software",
+   "text": "Command and data handling; writes and tests all flight software. (That is us.)"
+  },
+  {
+   "term": "RF Communications",
+   "text": "Satellite and ground RF hardware and software, and the RF ground station at UChicago."
+  },
+  {
+   "term": "Structures",
+   "text": "Satellite geometry and the payload optomechanics."
+  },
+  {
+   "term": "Thermal",
+   "text": "Thermal simulation and thermal management."
+  },
+  {
+   "term": "Systems",
+   "text": "Integration across departments and system-level tests such as environmental testing."
+  },
+  {
+   "term": "Funding",
+   "text": "Grants, industry partners, sponsorships and donors."
+  },
+  {
+   "term": "Outreach",
+   "text": "Educational outreach and promoting the team."
+  },
+  {
+   "term": "Finance",
+   "text": "Tracks finances and purchases components."
+  }
+ ],
+ "terms": [
+  {
+   "term": "PULSE-A",
+   "text": "Polarization-modUlated Laser Satellite Experiment, a 3U CubeSat (per the docs mission overview)."
+  },
+  {
+   "term": "CPolSK",
+   "text": "Circular Polarization Shift Keying: bits are left and right circular polarization."
+  },
+  {
+   "term": "cFS / cFE / OSAL / PSP",
+   "text": "NASA Core Flight System; its Core Flight Executive; the OS Abstraction Layer; the Platform Support Package."
+  },
+  {
+   "term": "Software Bus (SB)",
+   "text": "cFE publish/subscribe messaging between apps, using pipes and message IDs."
+  },
+  {
+   "term": "SBN",
+   "text": "Software Bus Network: NASA app that bridges the bus between separate cFS instances."
+  },
+  {
+   "term": "OBC",
+   "text": "On-Board Computer: BeagleBone Black on a PC/104 flight motherboard."
+  },
+  {
+   "term": "Payload Controller",
+   "text": "Board with the payload computer (BeagleBone) and payload FPGA; backup for the OBC."
+  },
+  {
+   "term": "PAT",
+   "text": "Pointing, Acquisition and Tracking sequence that aligns the lasers."
+  },
+  {
+   "term": "FSM / QPD",
+   "text": "Fast steering mirror / quadrant photodiode, used in the pointing loop."
+  },
+  {
+   "term": "OGS / RFGS",
+   "text": "Optical Ground Station / Radio Frequency Ground Station."
+  },
+  {
+   "term": "CAN / I2C / SPI / CSP",
+   "text": "Buses and protocol used between computers and peripherals."
+  },
+  {
+   "term": "ADCS / PDU / EPS",
+   "text": "Attitude determination and control / power distribution unit / electrical power system."
+  },
+  {
+   "term": "SRR / PDR / CDR",
+   "text": "System Requirements, Preliminary Design and Critical Design Reviews. Our CDR is on 2026-11-17."
+  },
+  {
+   "term": "AIT / V&V / TVAC",
+   "text": "Assembly, integration and testing / verification and validation / thermal vacuum chamber."
+  },
+  {
+   "term": "CSLI",
+   "text": "NASA CubeSat Launch Initiative."
+  },
+  {
+   "term": "Transmission / Beacon lasers",
+   "text": "1550 nm downlink laser; 638 nm payload beacon; 1064 nm OGS beacon."
+  }
+ ],
+ "headsUp": [
+  "The Mission Overview page still says CDR is in November 2025 and that launch is Q1 2027; the team's CDR is on 2026-11-17. Treat dates on that page as stale until it is updated.",
+  "The docs describe two computers (OBC and Payload Controller), but IDR item RID-08 asked to descope to one. Check the current decision before relying on the dual-computer design.",
+  "The Software Bus page URL has a typo (cFS-sfotware-bus.html). The link in this hub is the live one.",
+  "In the code, the \"Communication Manager\" is the app bus_comms (the FSW index title \"Bus Communications Application\" is the older name). The docs describe CAN plus I2C, but the code uses CSP over SocketCAN only.",
+  "The docs home says pulse-firmware holds the FSW C files. It does not: the cFS code is in cFS-flight, and pulse-firmware holds Teensy sketches, FPGA code and test files.",
+  "cFS-flight main has no PULSE-A app code of its own; the real work is spread over unmerged branches (see the Changes tab)."
+ ],
+ "architecture": {
+  "asOf": "2026-10-11",
+  "nodes": [
+   {
+    "id": "adcs_manager",
+    "name": "ADCS Manager",
+    "col": 1,
+    "group": "OBC applications",
+    "docs": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/ADCS-manager-app.html",
+    "words": 207,
+    "status": "external",
+    "codeNote": "Code is in a separate PRIVATE repo, UChicago-Space-Program/adcs_app, pulled in as a git submodule (main pins 979ab53... on test_app-for-ADCS). Not read.",
+    "code": "https://github.com/UChicago-Space-Program/cFS-flight/tree/test_app-for-ADCS/apps",
+    "inputs": [
+     "Reads application configuration table",
+     "Receives data from Communication Application designated as originating from ADCS module",
+     "Reads GPS topic for current position",
+     "Accepts input from the limit checker application in case of a detected fault"
+    ],
+    "outputs": [
+     "Sends packaged ADCS commands to Communication Application for transmission on CAN bus",
+     "Publishes ADCS data on an ADCS topic"
+    ]
+   },
+   {
+    "id": "communication_manager",
+    "name": "Communication Manager",
+    "col": 1,
+    "group": "OBC applications",
+    "docs": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/communication-manager-app.html",
+    "words": 145,
+    "status": "branch",
+    "codeNote": "Implemented as app \"bus_comms\". Three divergent copies: feature/buscomms_branch (791 lines, Jan 18), radio-manager-dev (672 lines, Feb 8), cross-compile-initial (911 lines, Apr 20, newest). CSP over SocketCAN, tasks for routing/RX/TX/CFDP-RX. Not on main.",
+    "code": "https://github.com/UChicago-Space-Program/cFS-flight/tree/cross-compile-initial/apps/bus_comms",
+    "inputs": [
+     "CAN buses",
+     "SBN"
+    ],
+    "outputs": [
+     "CAN buses",
+     "SBN"
+    ]
+   },
+   {
+    "id": "deployment",
+    "name": "Deployment",
+    "col": 1,
+    "group": "OBC applications",
+    "docs": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/deployment-app.html",
+    "words": 259,
+    "status": "none",
+    "codeNote": "No code found for this app in cFS-flight (all branches), pulse-firmware, pulse-hardware or mission-documentation.",
+    "code": "",
+    "inputs": [
+     "Receives data from Power Manager Application",
+     "Receives data from ADCS Application",
+     "Event message from Power Manager Application specifying sufficient power level reached",
+     "ADCS topic data for detumbling status"
+    ],
+    "outputs": [
+     "Sends burn fet/burn wire pins high to deploy magnetometer (initial bootup)",
+     "Sends event message on SBN to ADCS application specifying detumbling procedure",
+     "Sends burn fet/burn wire pins high to deploy solar panels and antenna (initial only)",
+     "Sends event message over topic specifying deployment completed (initial only)",
+     "Sends commands to Communication App"
+    ]
+   },
+   {
+    "id": "gps_manager",
+    "name": "GPS Manager",
+    "col": 1,
+    "group": "OBC applications",
+    "docs": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/GPS-manager-app.html",
+    "words": 191,
+    "status": "none",
+    "codeNote": "No code found for this app in cFS-flight (all branches), pulse-firmware, pulse-hardware or mission-documentation.",
+    "code": "",
+    "inputs": [
+     "Reads application configuration table",
+     "Receives data from Communication Application designated as originating from GPS module",
+     "Accepts input from the limit checker application in case of a detected fault"
+    ],
+    "outputs": [
+     "Sends command structs to the Communication Application with instructions to package as CSP and send to GPS module",
+     "Publishes GPS data on GPS topic"
+    ]
+   },
+   {
+    "id": "payload_manager",
+    "name": "Payload Manager",
+    "col": 1,
+    "group": "OBC applications",
+    "docs": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/payload-manager-app.html",
+    "words": 170,
+    "status": "none",
+    "codeNote": "No code found for this app in cFS-flight (all branches), pulse-firmware, pulse-hardware or mission-documentation.",
+    "code": "",
+    "inputs": [
+     "Reads application configuration table",
+     "Accepts input from the limit checker application in case of a detected fault",
+     "Reads incoming data from payload topics",
+     "Accepts requests to modify payload behavior"
+    ],
+    "outputs": [
+     "Current payload health and state on a Payload topic",
+     "Request to the ADCS application for change of targeting offset"
+    ]
+   },
+   {
+    "id": "power_manager",
+    "name": "Power Manager",
+    "col": 1,
+    "group": "OBC applications",
+    "docs": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/power-manager-app.html",
+    "words": 241,
+    "status": "none",
+    "codeNote": "No code found for this app in cFS-flight (all branches), pulse-firmware, pulse-hardware or mission-documentation.",
+    "code": "",
+    "inputs": [
+     "Reads application configuration table",
+     "Direct data input from dedicated power I^2^C line",
+     "Takes in input from other applications for activating power for devices",
+     "Accepts input from the limit checker application in case of a detected fault"
+    ],
+    "outputs": [
+     "Direct data output over dedicated power I^2^C line",
+     "Current power state and telemetry output over Power topic"
+    ]
+   },
+   {
+    "id": "radio_manager",
+    "name": "Radio Manager",
+    "col": 1,
+    "group": "OBC applications",
+    "docs": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/radio-manager-app.html",
+    "words": 153,
+    "status": "branch",
+    "codeNote": "Two competing implementations on radio-manager-dev: radio_murgas_app (668 lines, integrated with bus_comms and CF/CFDP) and radio_app (475 lines, AX100 prototype). Not on main.",
+    "code": "https://github.com/UChicago-Space-Program/cFS-flight/tree/radio-manager-dev/apps",
+    "inputs": [
+     "Read command output from radio and radio health data using UART",
+     "Accepts input from the limit checker application in case of a detected fault"
+    ],
+    "outputs": [
+     "Send satellite telemetry packets to the radio module",
+     "Transmit heartbeat signals to the watchdog application"
+    ]
+   },
+   {
+    "id": "watchdog_monitor",
+    "name": "Watchdog Monitor",
+    "col": 1,
+    "group": "OBC applications",
+    "docs": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/watchdog-monitor-app.html",
+    "words": 140,
+    "status": "none",
+    "codeNote": "No code found for this app in cFS-flight (all branches), pulse-firmware, pulse-hardware or mission-documentation.",
+    "code": "",
+    "inputs": [
+     "Incoming heartbeat signal from Payload Controller Application",
+     "Do we need a signal from the watchdog itself?"
+    ],
+    "outputs": [
+     "Heartbeat signal to the watchdog timer on I^2^C and payload controller on CAN",
+     "Alter watchdog timeout length"
+    ]
+   },
+   {
+    "id": "data_collection",
+    "name": "Data Collection",
+    "col": 3,
+    "group": "Payload Controller applications",
+    "docs": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/data-collection-app.html",
+    "words": 100,
+    "status": "none",
+    "codeNote": "No code found for this app in cFS-flight (all branches), pulse-firmware, pulse-hardware or mission-documentation.",
+    "code": "",
+    "inputs": [
+     "Accept event logs from PAT Application, Watchdog Application, Radio, and Payload Controller (all critical, restartable components)"
+    ],
+    "outputs": [
+     "Send logs to the Radio Application which transmits telemetry to ground stations"
+    ]
+   },
+   {
+    "id": "fpga_manager",
+    "name": "FPGA Manager",
+    "col": 3,
+    "group": "Payload Controller applications",
+    "docs": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/FPGA-manager-app.html",
+    "words": 128,
+    "status": "none",
+    "codeNote": "No code found for this app in cFS-flight (all branches), pulse-firmware, pulse-hardware or mission-documentation.",
+    "code": "",
+    "inputs": [
+     "Ethernet?"
+    ],
+    "outputs": [
+     "Use SPI interface to output data to flash memory. Specifically, the data is going to be used to control the polarization of the FPGA, since it will pulse on/off two different lasers that are polarized differently"
+    ]
+   },
+   {
+    "id": "fsm_manager",
+    "name": "FSM Manager",
+    "col": 3,
+    "group": "Payload Controller applications",
+    "docs": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/FSM-manager-app.html",
+    "words": 110,
+    "status": "none",
+    "codeNote": "No code found for this app in cFS-flight (all branches), pulse-firmware, pulse-hardware or mission-documentation.",
+    "code": "",
+    "inputs": [
+     "PAT Application messages over SBN"
+    ],
+    "outputs": [
+     "Output digital message to FSM driver through SPI"
+    ]
+   },
+   {
+    "id": "laser_manager",
+    "name": "Laser Manager",
+    "col": 3,
+    "group": "Payload Controller applications",
+    "docs": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/laser-manager.html",
+    "words": 125,
+    "status": "none",
+    "codeNote": "No code found for this app in cFS-flight (all branches), pulse-firmware, pulse-hardware or mission-documentation.",
+    "code": "",
+    "inputs": [
+     "Receive messages to turn on/off the laser (not sure if discrete units are required)"
+    ],
+    "outputs": [
+     "Output event message on the SBN to Power Manager application (OBC) specifying that the laser should be turned on"
+    ]
+   },
+   {
+    "id": "pat",
+    "name": "PAT",
+    "col": 3,
+    "group": "Payload Controller applications",
+    "docs": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/PAT-app.html",
+    "words": 207,
+    "status": "none",
+    "codeNote": "No code found for this app in cFS-flight (all branches), pulse-firmware, pulse-hardware or mission-documentation.",
+    "code": "",
+    "inputs": [
+     "Receive data from the Quadrant-Photodiode Manager on positioning",
+     "Receive relevant commands from Radio Manager",
+     "Receive position data from GPS Application",
+     "Accept telemetry from ground station"
+    ],
+    "outputs": [
+     "Command the Laser Manager, FPGA Manager, and FSM Manager",
+     "Send positioning commands to the ADCS Manager",
+     "Log to Data-Collection Application"
+    ]
+   },
+   {
+    "id": "quadcell_manager",
+    "name": "Quadcell Manager",
+    "col": 3,
+    "group": "Payload Controller applications",
+    "docs": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/quadcell-manager-app.html",
+    "words": 107,
+    "status": "none",
+    "codeNote": "No code found for this app in cFS-flight (all branches), pulse-firmware, pulse-hardware or mission-documentation.",
+    "code": "",
+    "inputs": [
+     "Read signals from QPD (what is hardware interface?)",
+     "Convert these signals to a measurement of misalignment"
+    ],
+    "outputs": [
+     "Output to PAT Application"
+    ]
+   },
+   {
+    "id": "checksum",
+    "name": "Checksum",
+    "col": 2,
+    "group": "NASA-provided cFS applications",
+    "docs": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/checksum-app.html",
+    "words": 209,
+    "status": "none",
+    "codeNote": "No code found for this app in cFS-flight (all branches), pulse-firmware, pulse-hardware or mission-documentation.",
+    "code": "",
+    "inputs": [],
+    "outputs": []
+   },
+   {
+    "id": "cfdp",
+    "name": "CFDP",
+    "col": 2,
+    "group": "NASA-provided cFS applications",
+    "docs": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/CFDP-app.html",
+    "words": 115,
+    "status": "branch",
+    "codeNote": "NASA CF app is present on radio-manager-dev (apps/cf).",
+    "code": "https://github.com/UChicago-Space-Program/cFS-flight/tree/radio-manager-dev/apps/cf",
+    "inputs": [],
+    "outputs": []
+   },
+   {
+    "id": "data_store",
+    "name": "Data Store",
+    "col": 2,
+    "group": "NASA-provided cFS applications",
+    "docs": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/data-store-app.html",
+    "words": 183,
+    "status": "none",
+    "codeNote": "No code found for this app in cFS-flight (all branches), pulse-firmware, pulse-hardware or mission-documentation.",
+    "code": "",
+    "inputs": [],
+    "outputs": []
+   },
+   {
+    "id": "file_manager",
+    "name": "File Manager",
+    "col": 2,
+    "group": "NASA-provided cFS applications",
+    "docs": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/file-manager-app.html",
+    "words": 135,
+    "status": "none",
+    "codeNote": "No code found for this app in cFS-flight (all branches), pulse-firmware, pulse-hardware or mission-documentation.",
+    "code": "",
+    "inputs": [],
+    "outputs": []
+   },
+   {
+    "id": "health_and_safety",
+    "name": "Health and Safety",
+    "col": 2,
+    "group": "NASA-provided cFS applications",
+    "docs": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/health-and-safety-app.html",
+    "words": 108,
+    "status": "branch",
+    "codeNote": "NASA HS app is present on branch NASA-cFS-Apps (added 2025-11-08).",
+    "code": "https://github.com/UChicago-Space-Program/cFS-flight/tree/NASA-cFS-Apps/apps/hs",
+    "inputs": [],
+    "outputs": []
+   },
+   {
+    "id": "housekeeping",
+    "name": "Housekeeping",
+    "col": 2,
+    "group": "NASA-provided cFS applications",
+    "docs": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/housekeeping-app.html",
+    "words": 167,
+    "status": "none",
+    "codeNote": "No code found for this app in cFS-flight (all branches), pulse-firmware, pulse-hardware or mission-documentation.",
+    "code": "",
+    "inputs": [],
+    "outputs": []
+   },
+   {
+    "id": "limit_checker",
+    "name": "Limit Checker",
+    "col": 2,
+    "group": "NASA-provided cFS applications",
+    "docs": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/limit-checker-app.html",
+    "words": 130,
+    "status": "none",
+    "codeNote": "No code found for this app in cFS-flight (all branches), pulse-firmware, pulse-hardware or mission-documentation.",
+    "code": "",
+    "inputs": [],
+    "outputs": []
+   },
+   {
+    "id": "memory_dwell",
+    "name": "Memory Dwell",
+    "col": 2,
+    "group": "NASA-provided cFS applications",
+    "docs": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/memory-dwell-app.html",
+    "words": 79,
+    "status": "none",
+    "codeNote": "No code found for this app in cFS-flight (all branches), pulse-firmware, pulse-hardware or mission-documentation.",
+    "code": "",
+    "inputs": [],
+    "outputs": []
+   },
+   {
+    "id": "memory_manager",
+    "name": "Memory Manager",
+    "col": 2,
+    "group": "NASA-provided cFS applications",
+    "docs": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/memory-manager-app.html",
+    "words": 164,
+    "status": "none",
+    "codeNote": "No code found for this app in cFS-flight (all branches), pulse-firmware, pulse-hardware or mission-documentation.",
+    "code": "",
+    "inputs": [],
+    "outputs": []
+   },
+   {
+    "id": "sbn",
+    "name": "SBN",
+    "col": 2,
+    "group": "NASA-provided cFS applications",
+    "docs": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/SBN-app.html",
+    "words": 192,
+    "status": "none",
+    "codeNote": "No code found for this app in cFS-flight (all branches), pulse-firmware, pulse-hardware or mission-documentation.",
+    "code": "",
+    "inputs": [],
+    "outputs": []
+   },
+   {
+    "id": "stored_commands",
+    "name": "Stored Commands",
+    "col": 2,
+    "group": "NASA-provided cFS applications",
+    "docs": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/stored-commands-app.html",
+    "words": 159,
+    "status": "none",
+    "codeNote": "No code found for this app in cFS-flight (all branches), pulse-firmware, pulse-hardware or mission-documentation.",
+    "code": "",
+    "inputs": [],
+    "outputs": []
+   },
+   {
+    "id": "42_simulator",
+    "name": "42 Simulator",
+    "col": 4,
+    "group": "Simulation software",
+    "docs": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/42-simulator.html",
+    "words": 303,
+    "status": "unknown",
+    "codeNote": "Simulator pages exist; no simulator code was found in the repos checked.",
+    "code": "",
+    "inputs": [],
+    "outputs": []
+   },
+   {
+    "id": "d2s2_simulator",
+    "name": "D2S2 Simulator",
+    "col": 4,
+    "group": "Simulation software",
+    "docs": "https://docs.uchicagospaceprogram.org/documentation/avionics/fsw/D2S2-simulator.html",
+    "words": 268,
+    "status": "unknown",
+    "codeNote": "Simulator pages exist; no simulator code was found in the repos checked.",
+    "code": "",
+    "inputs": [],
+    "outputs": []
+   },
+   {
+    "id": "can",
+    "name": "CAN bus",
+    "col": 0,
+    "group": "Hardware & external",
+    "docs": "",
+    "words": 0,
+    "hw": true
+   },
+   {
+    "id": "i2c",
+    "name": "I2C bus",
+    "col": 0,
+    "group": "Hardware & external",
+    "docs": "",
+    "words": 0,
+    "hw": true
+   },
+   {
+    "id": "spi",
+    "name": "SPI",
+    "col": 0,
+    "group": "Hardware & external",
+    "docs": "",
+    "words": 0,
+    "hw": true
+   },
+   {
+    "id": "radio_hw",
+    "name": "Radio module",
+    "col": 0,
+    "group": "Hardware & external",
+    "docs": "",
+    "words": 0,
+    "hw": true
+   },
+   {
+    "id": "gps_hw",
+    "name": "GPS module",
+    "col": 0,
+    "group": "Hardware & external",
+    "docs": "",
+    "words": 0,
+    "hw": true
+   },
+   {
+    "id": "adcs_hw",
+    "name": "ADCS core",
+    "col": 0,
+    "group": "Hardware & external",
+    "docs": "",
+    "words": 0,
+    "hw": true
+   },
+   {
+    "id": "pdu",
+    "name": "PDU / power",
+    "col": 0,
+    "group": "Hardware & external",
+    "docs": "",
+    "words": 0,
+    "hw": true
+   },
+   {
+    "id": "payload_hw",
+    "name": "Payload hardware (lasers, QPD, FPGA, FSM)",
+    "col": 0,
+    "group": "Hardware & external",
+    "docs": "",
+    "words": 0,
+    "hw": true
+   },
+   {
+    "id": "gs",
+    "name": "Ground station",
+    "col": 0,
+    "group": "Hardware & external",
+    "docs": "",
+    "words": 0,
+    "hw": true
+   },
+   {
+    "id": "wd",
+    "name": "Watchdog / reset pins",
+    "col": 0,
+    "group": "Hardware & external",
+    "docs": "",
+    "words": 0,
+    "hw": true
+   },
+   {
+    "id": "storage",
+    "name": "Storage / file system",
+    "col": 0,
+    "group": "Hardware & external",
+    "docs": "",
+    "words": 0,
+    "hw": true
+   }
+  ],
+  "edges": [
+   {
+    "a": "adcs_manager",
+    "b": "adcs_hw",
+    "kind": "docs",
+    "why": "**ADCS Core**: Receives commands and provides telemetry data"
+   },
+   {
+    "a": "adcs_manager",
+    "b": "communication_manager",
+    "kind": "docs",
+    "why": "communication-manager-app.html[Communication Manager Application]: Receives ADCS module data and sends ADCS commands"
+   },
+   {
+    "a": "adcs_manager",
+    "b": "gps_manager",
+    "kind": "docs",
+    "why": "GPS-manager-app.html[GPS Manager Application]: Reads current position data"
+   },
+   {
+    "a": "adcs_manager",
+    "b": "limit_checker",
+    "kind": "docs",
+    "why": "limit-checker-app.html[Limit Checker Application]: Receives fault notifications"
+   },
+   {
+    "a": "adcs_manager",
+    "b": "power_manager",
+    "kind": "docs",
+    "why": "power-manager-app.html[Power Manager Application]: Requests power activation"
+   },
+   {
+    "a": "adcs_manager",
+    "b": "sbn",
+    "kind": "docs",
+    "why": "SBN-app.html[SBN Application]: Connects to Software Bus Network"
+   },
+   {
+    "a": "cfdp",
+    "b": "data_store",
+    "kind": "docs",
+    "why": "Transfers files created by DS from onboard storage to ground stations (see link:data-store-app.html[Data Store Application])"
+   },
+   {
+    "a": "cfdp",
+    "b": "file_manager",
+    "kind": "docs",
+    "why": "Works with FM for file system operations (see link:file-manager-app.html[File Manager Application])"
+   },
+   {
+    "a": "cfdp",
+    "b": "sbn",
+    "kind": "docs",
+    "why": "SBN-app.html[SBN Application]: Connects to Software Bus Network"
+   },
+   {
+    "a": "checksum",
+    "b": "storage",
+    "kind": "docs",
+    "why": "**Memory Regions**: Monitors user-specified memory areas"
+   },
+   {
+    "a": "communication_manager",
+    "b": "adcs_manager",
+    "kind": "docs",
+    "why": "ADCS-manager-app.html[ADCS Manager Application]: Handles ADCS module communication"
+   },
+   {
+    "a": "communication_manager",
+    "b": "can",
+    "kind": "code",
+    "why": "CSP over SocketCAN (can1 in newest branch, vcan0 on radio branch)"
+   },
+   {
+    "a": "communication_manager",
+    "b": "can",
+    "kind": "docs",
+    "why": "link:CAN.html[CAN Bus]: Primary interface for hardware communication"
+   },
+   {
+    "a": "communication_manager",
+    "b": "deployment",
+    "kind": "docs",
+    "why": "deployment-app.html[Deployment Application]: Handles deployment commands"
+   },
+   {
+    "a": "communication_manager",
+    "b": "gps_manager",
+    "kind": "docs",
+    "why": "GPS-manager-app.html[GPS Manager Application]: Handles GPS module communication"
+   },
+   {
+    "a": "communication_manager",
+    "b": "gs",
+    "kind": "code",
+    "why": "CFDP uplink PDUs arrive on CSP port 15 (mock ground station = CSP addr 3)"
+   },
+   {
+    "a": "communication_manager",
+    "b": "i2c",
+    "kind": "docs",
+    "why": "link:I2C.html[I^2^C Bus]: Handles I^2^C communication protocols"
+   },
+   {
+    "a": "communication_manager",
+    "b": "radio_manager",
+    "kind": "code",
+    "why": "bus_comms publishes received CSP data on BUS_COMMS_CSP_RX_DATA_MID (0x088A)"
+   },
+   {
+    "a": "communication_manager",
+    "b": "radio_manager",
+    "kind": "docs",
+    "why": "radio-manager-app.html[Radio Manager Application]: Handles radio module communication"
+   },
+   {
+    "a": "communication_manager",
+    "b": "sbn",
+    "kind": "docs",
+    "why": "SBN-app.html[SBN Application]: Connects to Software Bus Network"
+   },
+   {
+    "a": "data_collection",
+    "b": "pat",
+    "kind": "docs",
+    "why": "PAT-app.html[PAT Application]: Receives event logs"
+   },
+   {
+    "a": "data_collection",
+    "b": "sbn",
+    "kind": "docs",
+    "why": "SBN-app.html[SBN Application]: Connects to Software Bus Network"
+   },
+   {
+    "a": "data_store",
+    "b": "cfdp",
+    "kind": "docs",
+    "why": "Transfers stored files to ground stations (see link:CFDP-app.html[CFDP Application])"
+   },
+   {
+    "a": "data_store",
+    "b": "file_manager",
+    "kind": "docs",
+    "why": "Works with FM for file system operations (see link:file-manager-app.html[File Manager Application])"
+   },
+   {
+    "a": "data_store",
+    "b": "storage",
+    "kind": "docs",
+    "why": "**Storage Device**: Writes files to solid state recorder or other storage media"
+   },
+   {
+    "a": "deployment",
+    "b": "adcs_manager",
+    "kind": "docs",
+    "why": "ADCS-manager-app.html[ADCS Manager Application]: Sends detumbling commands and receives status"
+   },
+   {
+    "a": "deployment",
+    "b": "communication_manager",
+    "kind": "docs",
+    "why": "communication-manager-app.html[Communication Manager Application]: Sends deployment commands"
+   },
+   {
+    "a": "deployment",
+    "b": "pdu",
+    "kind": "docs",
+    "why": "**Burn FET/Burn Wire Pins**: Controls deployment mechanisms"
+   },
+   {
+    "a": "deployment",
+    "b": "power_manager",
+    "kind": "docs",
+    "why": "power-manager-app.html[Power Manager Application]: Receives power level status"
+   },
+   {
+    "a": "deployment",
+    "b": "sbn",
+    "kind": "docs",
+    "why": "SBN-app.html[SBN Application]: Connects to Software Bus Network"
+   },
+   {
+    "a": "file_manager",
+    "b": "cfdp",
+    "kind": "docs",
+    "why": "Works with CF for file transfer operations (see link:CFDP-app.html[CFDP Application])"
+   },
+   {
+    "a": "file_manager",
+    "b": "data_store",
+    "kind": "docs",
+    "why": "Manages files created by DS (see link:data-store-app.html[Data Store Application])"
+   },
+   {
+    "a": "file_manager",
+    "b": "storage",
+    "kind": "docs",
+    "why": "**File System**: Provides mapping for onboard storage"
+   },
+   {
+    "a": "fpga_manager",
+    "b": "pat",
+    "kind": "docs",
+    "why": "PAT-app.html[PAT Application]: Receives commands for FPGA control"
+   },
+   {
+    "a": "fpga_manager",
+    "b": "payload_hw",
+    "kind": "docs",
+    "why": "FPGA Hardware Interface: Controls FPGA operations"
+   },
+   {
+    "a": "fpga_manager",
+    "b": "sbn",
+    "kind": "docs",
+    "why": "SBN-app.html[SBN Application]: Connects to Software Bus Network"
+   },
+   {
+    "a": "fpga_manager",
+    "b": "spi",
+    "kind": "docs",
+    "why": "link:SPI.html[SPI] Interface: Controls flash memory for FPGA"
+   },
+   {
+    "a": "fsm_manager",
+    "b": "pat",
+    "kind": "docs",
+    "why": "PAT-app.html[PAT Application]: Receives positioning commands"
+   },
+   {
+    "a": "fsm_manager",
+    "b": "sbn",
+    "kind": "docs",
+    "why": "SBN-app.html[SBN Application]: Connects to Software Bus Network"
+   },
+   {
+    "a": "fsm_manager",
+    "b": "spi",
+    "kind": "docs",
+    "why": "link:SPI.html[SPI] Interface: Controls FSM driver"
+   },
+   {
+    "a": "gps_manager",
+    "b": "adcs_manager",
+    "kind": "docs",
+    "why": "ADCS-manager-app.html[ADCS Manager Application]: Provides position data"
+   },
+   {
+    "a": "gps_manager",
+    "b": "communication_manager",
+    "kind": "docs",
+    "why": "communication-manager-app.html[Communication Manager Application]: Sends GPS commands and receives GPS module data"
+   },
+   {
+    "a": "gps_manager",
+    "b": "gps_hw",
+    "kind": "docs",
+    "why": "**GPS Module**: Interfaces with GNSS receiver hardware"
+   },
+   {
+    "a": "gps_manager",
+    "b": "limit_checker",
+    "kind": "docs",
+    "why": "limit-checker-app.html[Limit Checker Application]: Receives fault notifications"
+   },
+   {
+    "a": "gps_manager",
+    "b": "power_manager",
+    "kind": "docs",
+    "why": "power-manager-app.html[Power Manager Application]: Requests power activation"
+   },
+   {
+    "a": "gps_manager",
+    "b": "sbn",
+    "kind": "docs",
+    "why": "SBN-app.html[SBN Application]: Connects to Software Bus Network"
+   },
+   {
+    "a": "laser_manager",
+    "b": "pat",
+    "kind": "docs",
+    "why": "PAT-app.html[PAT Application]: Receives laser control commands"
+   },
+   {
+    "a": "laser_manager",
+    "b": "payload_hw",
+    "kind": "docs",
+    "why": "Laser Hardware: Direct control interface"
+   },
+   {
+    "a": "laser_manager",
+    "b": "power_manager",
+    "kind": "docs",
+    "why": "power-manager-app.html[Power Manager Application]: Requests laser power activation"
+   },
+   {
+    "a": "laser_manager",
+    "b": "sbn",
+    "kind": "docs",
+    "why": "SBN-app.html[SBN Application]: Connects to Software Bus Network"
+   },
+   {
+    "a": "limit_checker",
+    "b": "stored_commands",
+    "kind": "docs",
+    "why": "Initiates RTS command scripts when thresholds are violated (see link:stored-commands-app.html[Stored Commands Application])"
+   },
+   {
+    "a": "memory_dwell",
+    "b": "storage",
+    "kind": "docs",
+    "why": "**CPU**: Tracks memory addresses accessed by the processor"
+   },
+   {
+    "a": "pat",
+    "b": "adcs_manager",
+    "kind": "docs",
+    "why": "ADCS-manager-app.html[ADCS Manager Application]: Sends positioning commands"
+   },
+   {
+    "a": "pat",
+    "b": "data_collection",
+    "kind": "docs",
+    "why": "data-collection-app.html[Data-Collection Application]: Logs data"
+   },
+   {
+    "a": "pat",
+    "b": "fpga_manager",
+    "kind": "docs",
+    "why": "FPGA-manager-app.html[FPGA Manager Application]: Sends FPGA commands"
+   },
+   {
+    "a": "pat",
+    "b": "fsm_manager",
+    "kind": "docs",
+    "why": "FSM-manager-app.html[FSM Manager Application]: Sends positioning commands"
+   },
+   {
+    "a": "pat",
+    "b": "gps_manager",
+    "kind": "docs",
+    "why": "GPS-manager-app.html[GPS Manager Application]: Receives position data"
+   },
+   {
+    "a": "pat",
+    "b": "gs",
+    "kind": "docs",
+    "why": "Ground Station: Receives telemetry"
+   },
+   {
+    "a": "pat",
+    "b": "laser_manager",
+    "kind": "docs",
+    "why": "laser-manager.html[Laser Manager Application]: Sends laser commands"
+   },
+   {
+    "a": "pat",
+    "b": "quadcell_manager",
+    "kind": "docs",
+    "why": "quadcell-manager-app.html[Quadrant-Photodiode Manager Application]: Receives positioning data"
+   },
+   {
+    "a": "pat",
+    "b": "radio_manager",
+    "kind": "docs",
+    "why": "radio-manager-app.html[Radio Manager Application]: Receives commands"
+   },
+   {
+    "a": "pat",
+    "b": "sbn",
+    "kind": "docs",
+    "why": "SBN-app.html[SBN Application]: Connects to Software Bus Network"
+   },
+   {
+    "a": "payload_manager",
+    "b": "payload_hw",
+    "kind": "docs",
+    "why": "**Payload Controller**: Monitors payload hardware state"
+   },
+   {
+    "a": "payload_manager",
+    "b": "power_manager",
+    "kind": "docs",
+    "why": "power-manager-app.html[Power Manager Application]: Requests power activation"
+   },
+   {
+    "a": "payload_manager",
+    "b": "sbn",
+    "kind": "docs",
+    "why": "SBN-app.html[SBN Application]: Connects to Software Bus Network"
+   },
+   {
+    "a": "power_manager",
+    "b": "adcs_manager",
+    "kind": "docs",
+    "why": "ADCS-manager-app.html[ADCS Manager Application]: Receives power activation requests"
+   },
+   {
+    "a": "power_manager",
+    "b": "deployment",
+    "kind": "docs",
+    "why": "deployment-app.html[Deployment Application]: Provides power level status"
+   },
+   {
+    "a": "power_manager",
+    "b": "gps_manager",
+    "kind": "docs",
+    "why": "GPS-manager-app.html[GPS Manager Application]: Receives power activation requests"
+   },
+   {
+    "a": "power_manager",
+    "b": "i2c",
+    "kind": "docs",
+    "why": "Dedicated link:I2C.html[I^2^C Interface]: Direct communication with PDU hardware"
+   },
+   {
+    "a": "power_manager",
+    "b": "payload_manager",
+    "kind": "docs",
+    "why": "payload-manager-app.html[Payload Manager Application]: Receives power activation requests"
+   },
+   {
+    "a": "power_manager",
+    "b": "pdu",
+    "kind": "docs",
+    "why": "**PDU**: Monitors and controls power distribution unit"
+   },
+   {
+    "a": "power_manager",
+    "b": "radio_manager",
+    "kind": "docs",
+    "why": "radio-manager-app.html[Radio Manager Application]: Receives power activation requests"
+   },
+   {
+    "a": "power_manager",
+    "b": "sbn",
+    "kind": "docs",
+    "why": "SBN-app.html[SBN Application]: Connects to Software Bus Network"
+   },
+   {
+    "a": "quadcell_manager",
+    "b": "pat",
+    "kind": "docs",
+    "why": "PAT-app.html[PAT Application]: Provides positioning data"
+   },
+   {
+    "a": "quadcell_manager",
+    "b": "payload_hw",
+    "kind": "docs",
+    "why": "QPD Hardware: Reads photodiode signals"
+   },
+   {
+    "a": "quadcell_manager",
+    "b": "sbn",
+    "kind": "docs",
+    "why": "SBN-app.html[SBN Application]: Connects to Software Bus Network"
+   },
+   {
+    "a": "radio_manager",
+    "b": "cfdp",
+    "kind": "code",
+    "why": "radio_murgas_app sends CF_CMD_MID and subscribes to CF_CH0_TX_MID / CF_CH0_RX_MID"
+   },
+   {
+    "a": "radio_manager",
+    "b": "communication_manager",
+    "kind": "code",
+    "why": "radio_murgas_app sends BUS_COMMS_CMD_MID (0x1888) with SEND_CSP_CC to transmit"
+   },
+   {
+    "a": "radio_manager",
+    "b": "communication_manager",
+    "kind": "docs",
+    "why": "communication-manager-app.html[Communication Manager Application]: Passes radio commands and receives radio data"
+   },
+   {
+    "a": "radio_manager",
+    "b": "limit_checker",
+    "kind": "docs",
+    "why": "limit-checker-app.html[Limit Checker Application]: Checks for faults in data"
+   },
+   {
+    "a": "radio_manager",
+    "b": "power_manager",
+    "kind": "docs",
+    "why": "power-manager-app.html[Power Manager Application]: Requests power activation"
+   },
+   {
+    "a": "radio_manager",
+    "b": "radio_hw",
+    "kind": "docs",
+    "why": "**Radio Module**: Receives commands and provides telemetry data"
+   },
+   {
+    "a": "radio_manager",
+    "b": "sbn",
+    "kind": "docs",
+    "why": "SBN-app.html[SBN Application]: Connects to Software Bus Network"
+   },
+   {
+    "a": "stored_commands",
+    "b": "limit_checker",
+    "kind": "docs",
+    "why": "Receives RTS commands when thresholds are violated (see link:limit-checker-app.html[Limit Checker Application])"
+   },
+   {
+    "a": "watchdog_monitor",
+    "b": "communication_manager",
+    "kind": "docs",
+    "why": "communication-manager-app.html[Communication Manager Application]: Exchanges heartbeat data for radio"
+   },
+   {
+    "a": "watchdog_monitor",
+    "b": "payload_hw",
+    "kind": "docs",
+    "why": "Reset line: Controls payload controller reboot"
+   },
+   {
+    "a": "watchdog_monitor",
+    "b": "sbn",
+    "kind": "docs",
+    "why": "SBN-app.html[SBN Application]: Connects to Software Bus Network"
+   },
+   {
+    "a": "watchdog_monitor",
+    "b": "wd",
+    "kind": "docs",
+    "why": "Watchdog GPIO pins: Sends heartbeat signals"
+   }
+  ],
+  "note": "Grey edges come from the Integration Points sections of the docs pages. Maroon edges are verified in the code on the radio-manager-dev and cross-compile-initial branches. Click a box to see its interfaces, code status and the changes that affect it."
+ },
+ "changes": [
+  {
+   "id": "CH-001",
+   "date": "2026-10-11",
+   "title": "bus_comms: the newest copy drops interfaces the radio app needs",
+   "severity": "high",
+   "area": "Communication Manager",
+   "detail": "cross-compile-initial (Apr 20, 2026) has the newest bus_comms, adding CAN request/response MIDs 0x1890/0x0890 and a TEST_CAN command, but its headers no longer define BUS_COMMS_SEND_CSP_CC or BUS_COMMS_CSP_RX_DATA_MID (0x088A). radio_murgas_app on radio-manager-dev includes bus_comms_msgids.h/bus_comms_msg.h and uses both, so it would not compile against the newest bus_comms. Based on header comparison; a full build was not run.",
+   "impacts": [
+    "Communication Manager",
+    "Radio Manager",
+    "CFDP"
+   ],
+   "action": "Pick one bus_comms as canonical, keep both interface sets, then rebuild and retest the CFDP file path.",
+   "source": "cFS-flight branches cross-compile-initial vs radio-manager-dev",
+   "status": "open"
+  },
+  {
+   "id": "CH-002",
+   "date": "2026-10-11",
+   "title": "Two radio apps with the same names and command codes",
+   "severity": "high",
+   "area": "Radio Manager",
+   "detail": "radio_app (AX100/ZMQ-CSP prototype, CMD MID 0x1884) and radio_murgas_app (CSP through bus_comms plus NASA CF, CMD MID 0x1886) both define RADIO_APP_* symbols, command codes 0-4 and a RADIO_APP entry point, so they cannot be linked together. Only radio_murgas_app is wired to bus_comms/CF. Neither is in any APPLIST or startup script yet.",
+   "impacts": [
+    "Radio Manager"
+   ],
+   "action": "Decide which one survives, rename or delete the other, and document the survivor.",
+   "source": "cFS-flight branch radio-manager-dev",
+   "status": "open"
+  },
+  {
+   "id": "CH-003",
+   "date": "2026-10-11",
+   "title": "Message ID overlaps (no MID allocation table)",
+   "severity": "medium",
+   "area": "All apps",
+   "detail": "ci_lab and radio_app both use 0x1884, 0x1885 and 0x0884; ci_lab is in the built APPLIST, so adding radio_app would collide. radio_murgas_app also defines RADIO_APP_TO_CSP_CAN_CONFIG/TX_MID as 0x1888/0x1889, duplicating bus_comms CMD/SEND_HK MIDs (the definitions are currently unused). The apps/ tree has 20+ MIDs picked by hand.",
+   "impacts": [
+    "Radio Manager",
+    "Communication Manager"
+   ],
+   "action": "Create one mission MID/topic table (this hub can host it) and assign IDs before more apps are added.",
+   "source": "scan of *_msgids.h on radio-manager-dev",
+   "status": "open"
+  },
+  {
+   "id": "CH-004",
+   "date": "2026-10-11",
+   "title": "main and the feature branches have diverged in layout",
+   "severity": "high",
+   "area": "Build / repo",
+   "detail": "main renamed sample_defs to PULSE-A_defs, added a Makefile, and added apps/adcs_app as a git submodule with an SSH URL (git@github.com:...adcs_app.git, private repo). radio-manager-dev has 22 commits not on main, cross-compile-initial 14, feature/buscomms_branch 13, and none contain main's last 4. Everyone who built from sample_defs will see conflicts, and the submodule needs SSH access to a private repo.",
+   "impacts": [
+    "Communication Manager",
+    "Radio Manager",
+    "ADCS Manager",
+    "CFDP"
+   ],
+   "action": "Agree a merge order (bus_comms, then radio, then CF), port sample_defs changes into PULSE-A_defs, and document how to get access to adcs_app.",
+   "source": "cFS-flight git history",
+   "status": "open"
+  },
+  {
+   "id": "CH-005",
+   "date": "2026-10-11",
+   "title": "Dual-computer design is built into code and docs",
+   "severity": "high",
+   "area": "Architecture",
+   "detail": "targets.cmake builds cpu1 and cpu2, bus_comms picks CSP addresses from the processor ID (1 and 2), and the docs rely on SBN between OBC and Payload Controller. The SmallSat paper and RID-08 say the two computers were combined into one. If that is final, SBN, the inter-computer heartbeat and Payload Manager's PC tracking change.",
+   "impacts": [
+    "Payload Manager",
+    "Watchdog Monitor",
+    "SBN",
+    "Communication Manager",
+    "FPGA Manager",
+    "FSM Manager",
+    "Laser Manager",
+    "PAT",
+    "Quadcell Manager",
+    "Data Collection"
+   ],
+   "action": "Leads confirm the single-computer decision, then update the architecture, targets.cmake and each affected page.",
+   "source": "SmallSat 2026 paper; IDR RID-08; cFS-flight targets.cmake",
+   "status": "open"
+  },
+  {
+   "id": "CH-006",
+   "date": "2026-10-11",
+   "title": "Docs describe behaviour the code does not have",
+   "severity": "medium",
+   "area": "Documentation",
+   "detail": "Communication Manager docs: CAN plus backup I2C and per-module handling for ADCS/GPS/radio/deployment. Code: CSP over SocketCAN, no I2C, only a placeholder source-to-SBN map. Radio Manager docs: UART radio, Limit Checker input, watchdog heartbeats. Code: CSP/CFDP file transfer, none of those. The docs' CFDP app is the NASA \"cf\" app in code. The FSW index calls the app \"Bus Communications Application\", which matches the code name bus_comms.",
+   "impacts": [
+    "Communication Manager",
+    "Radio Manager",
+    "CFDP"
+   ],
+   "action": "Rewrite these pages from the code (drafts are in the vault) and mark planned features as planned.",
+   "source": "mission-documentation adoc vs cFS-flight source",
+   "status": "open"
+  },
+  {
+   "id": "CH-007",
+   "date": "2026-10-11",
+   "title": "Most documented apps have no code in the public repos",
+   "severity": "high",
+   "area": "CDR readiness",
+   "detail": "11 custom apps (Deployment, GPS Manager, Power Manager, Payload Manager, Watchdog Monitor, Data Collection, FPGA Manager, FSM Manager, Laser Manager, PAT, Quadcell Manager) and 9 NASA apps (Checksum, Data Store, File Manager, Housekeeping, Limit Checker, Memory Dwell, Memory Manager, SBN, Stored Commands) have no source in any branch checked. ADCS lives in a private repo. Last push to cFS-flight was Apr 27, 2026.",
+   "impacts": [
+    "Deployment",
+    "GPS Manager",
+    "Power Manager",
+    "Payload Manager",
+    "Watchdog Monitor",
+    "Data Collection",
+    "FPGA Manager",
+    "FSM Manager",
+    "Laser Manager",
+    "PAT",
+    "Quadcell Manager"
+   ],
+   "action": "Ask the leads where this code lives (private repos, laptops, other branches). If it does not exist, CDR docs should say \"planned\" for these.",
+   "source": "repo scan 2026-10-11",
+   "status": "open"
+  },
+  {
+   "id": "CH-008",
+   "date": "2026-10-11",
+   "title": "pulse-firmware is stale and mislabeled in the docs",
+   "severity": "medium",
+   "area": "Repos",
+   "detail": "The docs home says pulse-firmware holds the FSW C files. Its README says OBC and PC are Teensy boards and the OBC.ino/PC.ino sketches are empty outlines; PDU/ contains one file with the text \"hello\". The repo does hold useful PayloadFPGA work (TinyFPGA, and BeagleV-Fire bitstream added Apr 29-30, 2026). The cFS code is in cFS-flight.",
+   "impacts": [
+    "FPGA Manager"
+   ],
+   "action": "Fix the docs home sentence, update the README, and decide whether Teensy sketches should be archived.",
+   "source": "pulse-firmware main",
+   "status": "open"
+  },
+  {
+   "id": "CH-009",
+   "date": "2026-10-11",
+   "title": "Build artifacts and vendored code committed",
+   "severity": "low",
+   "area": "Repo hygiene",
+   "detail": "On the radio and cross-compile branches, apps/bus_comms/fsw/libcsp (libcsp 2.1) is vendored inside the app and includes build_py/ with CMakeCache.txt and a.out binaries (the radio branch alone adds 722 files / 87,917 lines). No CI workflows exist on main. The radio table struct also has a plaintext Password[32] field.",
+   "impacts": [
+    "Communication Manager",
+    "Radio Manager"
+   ],
+   "action": "Add .gitignore rules, use libcsp as a submodule or package, and add a CI build.",
+   "source": "cFS-flight radio-manager-dev",
+   "status": "open"
+  },
+  {
+   "id": "CH-010",
+   "date": "2026-10-11",
+   "title": "A working end-to-end test rig already exists",
+   "severity": "info",
+   "area": "Testing",
+   "detail": "tools/radio-mock (CSP address 2) and tools/ground-station (CSP address 3) on vcan0 plus bus_comms (CSP address 1) reproduce CFDP file transfer from the satellite to a mock ground station. Good for onboarding and a CDR demo.",
+   "impacts": [
+    "Communication Manager",
+    "Radio Manager",
+    "CFDP"
+   ],
+   "action": "Write a run guide and make it the first onboarding exercise.",
+   "source": "cFS-flight radio-manager-dev tools/",
+   "status": "open"
+  },
+  {
+   "id": "CH-011",
+   "date": "2026-10-11",
+   "title": "ADCS command interface visible from the test branch",
+   "severity": "info",
+   "area": "ADCS Manager",
+   "detail": "test_app-for-ADCS (Apr 24-27, 2026) lets sample_app send ADCS_APP_INT_CMD_MID with ADCS_SUN_POINT_CC and ADCS_TURN_FROM_SUN_CC to adcs_app. Gives two concrete commands to document, but the app itself is private.",
+   "impacts": [
+    "ADCS Manager",
+    "Deployment"
+   ],
+   "action": "Get read access to adcs_app and document its MIDs and commands.",
+   "source": "cFS-flight test_app-for-ADCS",
+   "status": "open"
+  }
+ ]
+}
